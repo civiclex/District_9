@@ -1,3 +1,6 @@
+//Create empty variables for geojson layer
+var boundaryLayer = L.geoJson();
+
 //Initialize the leaflet map
  var map = L.map('map', {
     center: [38.0147,-84.483],
@@ -5,23 +8,20 @@
     zoomControl: true,
     dragging: true,
 });
-     
-//Create the baselayer and add it to the map
-var layer = L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/toner-lite/{z}/{x}/{y}{r}.{ext}', {
-attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-subdomains: 'abcd',
-minZoom: 0,
-maxZoom: 20,
-ext: 'png'
-});
-map.addLayer(layer);
+
+//Create the baselayer
+var baseLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+	attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+	subdomains: 'abcd',
+}).addTo(map);
+
 
 //Create the district boundaries layer from the geojson
-$.getJSON("data/Dist3.geojson", function(data) {
-    districtLayer = L.geoJson(data, {
-    weight: 1,
-    opacity: 1,
-    color: '#fa0000',
-    dashArray: '3'
+$.getJSON("data/Dist9.geojson", function(data) {
+    boundaryLayer = L.geoJson(data, {
+    stroke: false,
+    fillColor: '#ef6e4e',
+    fillOpacity: 0.15,
 }).addTo(map);
+map.fitBounds(boundaryLayer.getBounds());
 });
